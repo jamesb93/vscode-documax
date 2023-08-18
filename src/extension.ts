@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
+// @ts-ignore
 import * as mustache from 'mustache';
-import { parse } from 'yaml';
+import { ErrorCode, parse } from 'yaml';
 import { max } from './templates/max';
 import { render, sanitise } from './parsing';
 
@@ -10,7 +11,7 @@ function parseEditorContent(editorContent: string): string {
         mustache.escape = (text: string) => text;
         const rendered = mustache.render(max, parsed);
         return rendered;
-    } catch(e) {
+    } catch(e: any) {
         return e.message;
     }
 
@@ -39,7 +40,6 @@ export function activate(context: vscode.ExtensionContext) {
             const documentChangeDisposable = vscode.workspace.onDidChangeTextDocument(event => {
                 if (event.document === editor.document) {
                     const preview: string = parseEditorContent(editor.document.getText());
-                    console.log(preview)
                     // Update the webview content with new character count
                     updateWebviewContent(panel, preview);
                 }
