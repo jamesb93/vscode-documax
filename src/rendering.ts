@@ -1,5 +1,5 @@
 // @ts-ignore
-import * as mustache from 'mustache';
+const mustache = require('Mustache');
 import { sanitise } from './parsing';
 import { parse } from 'yaml';
 
