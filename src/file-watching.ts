@@ -18,7 +18,7 @@ export class FileWatcher {
             this.statusBarItem.command = 'vscode-documax.toggleWatching';
             this.statusBarItem.show();
         }
-    }
+    };
 
     toggleFileWatching = () => {
         console.log(this.statusBarItem);
@@ -41,7 +41,7 @@ export class FileWatcher {
         }
     
         this.updateStatusBar();
-    }
+    };
 }
 
 
