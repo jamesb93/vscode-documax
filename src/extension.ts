@@ -1,29 +1,16 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-// @ts-ignore
-import * as mustache from 'mustache';
-import { parse } from 'yaml';
-import { max } from './templates/max';
-import { sanitise } from './parsing';
+import { parseAndRender } from './rendering';
+import { maxMustacheTemplate } from './templates/max';
 
-function parseEditorContent(editorContent: string): string {
-    try {
-        const parsed = sanitise(parse(editorContent));
-        mustache.escape = (text: string) => text;
-        const rendered = mustache.render(max, parsed);
-        return rendered;
-    } catch(e: any) {
-        return e.message;
-    }
-}
 
 export function processAndSaveAllFiles() {
     const workspaceFolders = vscode.workspace.workspaceFolders;
 
     if (workspaceFolders) {
         const workspaceUri = workspaceFolders[0].uri;
-        const yamlFiles = vscode.workspace.findFiles('*.yaml', null, 1000); // Change the file glob as needed
+        const yamlFiles = vscode.workspace.findFiles('*.yaml', null, 4096); // Conceivably you won't be making more than 4096 objects. Why would you even try?
 
         yamlFiles.then(files => {
             files.forEach(async file => {
@@ -31,7 +18,7 @@ export function processAndSaveAllFiles() {
                 const yamlContent = yamlDocument.getText();
 
                 // Process the content using your logic
-                const processedContent = parseEditorContent(yamlContent);
+                const processedContent = parseAndRender(yamlContent, maxMustacheTemplate);
 
                 // Determine the output path
                 const outputFolderUri = vscode.Uri.joinPath(workspaceUri, 'documax-output');
@@ -61,7 +48,7 @@ export function processAndSaveFile() {
         const editorContent = editor.document.getText();
 
         // Process the content using your logic
-        const processedContent = parseEditorContent(editorContent);
+        const processedContent = parseAndRender(editorContent, maxMustacheTemplate);
 
         // Determine the output path (change 'output' to your desired folder name)
         const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -102,13 +89,13 @@ export function activate(context: vscode.ExtensionContext) {
         
         if (editor) {
             // Update the webview content with initial character count
-            const preview: string = parseEditorContent(editor.document.getText());
+            const preview: string = parseAndRender(editor.document.getText(), maxMustacheTemplate);
             updateWebviewContent(panel, preview);
 
             // Listen for document changes
             const documentChangeDisposable = vscode.workspace.onDidChangeTextDocument(event => {
                 if (event.document === editor.document) {
-                    const preview: string = parseEditorContent(editor.document.getText());
+                    const preview: string = parseAndRender(editor.document.getText(), maxMustacheTemplate);
                     // Update the webview content with new character count
                     updateWebviewContent(panel, preview);
                 }
