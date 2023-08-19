@@ -21,6 +21,10 @@
       {
         "command": "vscode-documax.generateDoc",
         "title": "Documax: Generate Output"
+      },
+      {
+        "command": "vscode-documax.toggleWatching",
+        "title": "Documax: Toggle File Watching"
       }
     ]
   },
