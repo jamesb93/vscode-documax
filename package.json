@@ -16,6 +16,10 @@
       {
         "command": "vscode-documax.previewDoc",
         "title": "Documax: Preview Output"
+      },
+      {
+        "command": "vscode-documax.generateDoc",
+        "title": "Documax: Generate Output"
       }
     ]
   },
