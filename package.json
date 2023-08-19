@@ -1,7 +1,8 @@
 {
   "name": "vscode-documax",
-  "displayName": "vscode-documax",
-  "description": "Creating Max Documentation with YAML",
+  "displayName": "Documax",
+  "description": "Create Max Package Documentation with YAML",
+  "publisher": "jamesbradbury",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.81.0"
