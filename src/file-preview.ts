@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+// @ts-ignore
 import { maxMustacheTemplate } from './templates/max';
 import { parseAndRender } from './rendering';
 
