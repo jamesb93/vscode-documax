@@ -1,18 +1,23 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import { yamlFileWatcher } from './file-watching';
 import { getWorkspaceFolderUri, checkFileExistsInWorkspaceRoot } from './common';
+import { processFilesWithConfiguration } from './file-processing';
 
-interface Configuration {
-	[key: string]: {
-		input: string;
-		output: string;
-	}
+
+export interface ConfigurationIO {
+	input: string,
+	output: string
+}
+
+export interface Configuration {
+	[key: string]: ConfigurationIO
 }
 
 const defaultConfiguation: Configuration = {
-	max : {
+	default : {
 		input: 'sources',
-		output: 'documax-output'
+		output: 'docs'
 	}
 };
 
@@ -20,16 +25,36 @@ class ConfigurationService {
 	config: Configuration;
 	configFileWatcher: vscode.FileSystemWatcher;
 	constructor() {		
-		this.configFileWatcher = vscode.workspace.createFileSystemWatcher('**/documax.config.json');
+		const workspaceFolders = vscode.workspace.workspaceFolders;
+		if (workspaceFolders) {
+			this.configFileWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(workspaceFolders[0], '**/documax.config.json'));
+		} else {
+			this.configFileWatcher = vscode.workspace.createFileSystemWatcher('**/documax.config.json');
+		}
 		this.config = this.initialiseConfiguration();
 		this.createConfigurationWatchers();
 	}
     
 	createConfigurationWatchers = () => {
-		this.configFileWatcher.onDidChange(() => { this.config = this.readConfigurationFile(); });
-    	this.configFileWatcher.onDidCreate(() => { this.config = this.readConfigurationFile(); });
-    	this.configFileWatcher.onDidDelete(() => { this.config = this.createDefaultConfiguration(); });
-	}
+		this.configFileWatcher.onDidChange(() => { 
+			this.config = this.readConfigurationFile(); 
+			if (yamlFileWatcher.isFileWatcherActive) {
+				processFilesWithConfiguration();
+			}
+		});
+    	this.configFileWatcher.onDidCreate(() => { 
+			this.config = this.readConfigurationFile();
+			if (yamlFileWatcher.isFileWatcherActive) {
+				processFilesWithConfiguration();
+			}
+		});
+    	this.configFileWatcher.onDidDelete(() => { 
+			this.config = this.createDefaultConfiguration();
+			if (yamlFileWatcher.isFileWatcherActive) {
+				processFilesWithConfiguration();
+			} 
+		});
+	};
 
 	initialiseConfiguration = () => {
 		// Determine if there is a configuration on extension init.
@@ -38,7 +63,8 @@ class ConfigurationService {
 			return this.readConfigurationFile();
 		}
 		return this.createDefaultConfiguration();
-	}
+	};
+
 	readConfigurationFile = (): Configuration => {
 		const workspaceUri = getWorkspaceFolderUri();
 		if (workspaceUri) {
@@ -49,19 +75,38 @@ class ConfigurationService {
 			try {
 				const jsonContent = fs.readFileSync(configPath.fsPath, 'utf-8');
 				const jsonData = JSON.parse(jsonContent);
+				this.validateConfiguration();
 				return jsonData;
 			} catch (error) {
-				console.error('Error reading or parsing JSON file:', error);
 				return this.createDefaultConfiguration();
 			}
 		}
 		return defaultConfiguation;
-	}
+	};
+
+	validateConfiguration = () => {
+		for (const [name, io] of Object.entries(this.getConfiguration())) {
+			if (!io.hasOwnProperty('input')) {
+				const err = `Configuration ${name} has invalid input.`;
+				vscode.window.showErrorMessage(err);
+				throw new Error(err);
+			}
+
+			if (!io.hasOwnProperty('output')) {
+				const err = `Configuration ${name} has invalid output.`;
+				vscode.window.showErrorMessage(err);
+				throw new Error(err);
+			}
+		}
+	};
 
 	createDefaultConfiguration = (): Configuration => {
 		return defaultConfiguation;
-	}
-	
+	};
+
+	getConfiguration = (): Configuration => {
+		return this.config;
+	};
 }
 
 export const configuration = new ConfigurationService();
