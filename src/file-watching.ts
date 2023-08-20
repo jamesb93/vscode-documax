@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { processAndSaveAllFiles } from './file-processing';
 
 
-export class FileWatcher {
+class FileWatcher {
     fileWatcher: vscode.FileSystemWatcher | null;
     isFileWatcherActive: boolean;
     statusBarItem: vscode.StatusBarItem | null;
@@ -10,7 +10,13 @@ export class FileWatcher {
         this.fileWatcher = null;
         this.isFileWatcherActive = false;
         this.statusBarItem = null;
+        this.initialiseFileWatching();        
     }
+
+    initialiseFileWatching = () => {
+        this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+        this.updateStatusBar();
+    };
 
     updateStatusBar = () => {
         if (this.statusBarItem) {
@@ -21,7 +27,6 @@ export class FileWatcher {
     };
 
     toggleFileWatching = () => {
-        console.log(this.statusBarItem);
         if (this.fileWatcher) {
             this.fileWatcher.dispose();
             this.fileWatcher = null;
@@ -43,6 +48,8 @@ export class FileWatcher {
         this.updateStatusBar();
     };
 }
+
+export const yamlFileWatcher = new FileWatcher();
 
 
 
