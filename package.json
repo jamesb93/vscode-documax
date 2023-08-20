@@ -37,8 +37,8 @@
     "test": "node ./out/test/runTest.js",
     "vscode:prepublish": "npm run esbuild-base -- --minify",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
-    "compile": "npm run esbuild-base -- --sourcemap",
-    "watch": "npm run esbuild-base -- --sourcemap --watch"
+    "compile": "npm run esbuild-base --",
+    "watch": "npm run esbuild-base -- --watch"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
