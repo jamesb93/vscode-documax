@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { processAndSaveAllFiles } from './file-processing';
+import { processFilesWithConfiguration } from './file-processing';
 
 
 class FileWatcher {
@@ -34,11 +34,11 @@ class FileWatcher {
         } else {
             const workspaceFolders = vscode.workspace.workspaceFolders;
             if (workspaceFolders) {
-                this.fileWatcher = vscode.workspace.createFileSystemWatcher('**/*.yaml');
-                processAndSaveAllFiles();
+                this.fileWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(workspaceFolders[0], '**/*.yaml'));
+                processFilesWithConfiguration();
                 this.fileWatcher.onDidChange(() => {
                     if (this.isFileWatcherActive) {
-                        processAndSaveAllFiles();
+                        processFilesWithConfiguration();
                     }
                 });
                 this.isFileWatcherActive = true;
