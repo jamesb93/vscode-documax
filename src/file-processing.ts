@@ -4,6 +4,8 @@ import * as path from 'path';
 import { parseAndRender } from './rendering';
 // @ts-ignore
 import { maxMustacheTemplate } from './templates/max';
+import { configuration } from './configuration';
+
 
 export function processAndSaveAllFiles() {
     const workspaceFolders = vscode.workspace.workspaceFolders;
