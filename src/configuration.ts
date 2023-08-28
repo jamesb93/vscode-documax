@@ -75,7 +75,6 @@ class ConfigurationService {
 			try {
 				const jsonContent = fs.readFileSync(configPath.fsPath, 'utf-8');
 				const jsonData = JSON.parse(jsonContent);
-				this.validateConfiguration();
 				return jsonData;
 			} catch (error) {
 				return this.createDefaultConfiguration();
