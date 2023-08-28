@@ -60,7 +60,8 @@ class ConfigurationService {
 		// Determine if there is a configuration on extension init.
 		const configExists = checkFileExistsInWorkspaceRoot('documax.config.json');
 		if (configExists) {
-			return this.readConfigurationFile();
+			const customConfig = this.readConfigurationFile();
+			return customConfig;
 		}
 		return this.createDefaultConfiguration();
 	};
