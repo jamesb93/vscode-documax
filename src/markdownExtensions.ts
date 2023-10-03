@@ -17,7 +17,7 @@ export const objects = {
                 text: match[1].trim(),
                 tokens: []
             };
-            this.lexer.inline(token.text, token.tokens)
+            this.lexer.inline(token.text, token.tokens);
             return token;
         }
     },
@@ -45,7 +45,7 @@ export const messages = {
                 text: match[1].trim(),
                 tokens: []
             };
-            this.lexer.inline(token.text, token.tokens)
+            this.lexer.inline(token.text, token.tokens);
             return token;
         }
     },
@@ -64,7 +64,6 @@ export const attributes = {
         }
     },
     tokenizer(src: string, tokens: Array<any>) {
-		// regex to capture everything inside of @@
 		const rule = /^@([^@]+)@/;
 		const match = rule.exec(src);
         if (match) {
@@ -74,7 +73,7 @@ export const attributes = {
                 text: match[1].trim(),
                 tokens: []
             };
-            this.lexer.inline(token.text, token.tokens)
+            this.lexer.inline(token.text, token.tokens);
             return token;
         }
     },
@@ -105,7 +104,7 @@ export const links = {
 					text: match[1].trim()
 				}]
             };
-            this.lexer.inline(token.text, token.tokens)
+            this.lexer.inline(token.text, token.tokens);
             return token;
         }
     },
