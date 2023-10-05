@@ -38,7 +38,6 @@ export function processFilesWithConfiguration() {
                     fs.writeFileSync(outputFileName, processedContent);
                 });
             });
-            // vscode.window.showInformationMessage(`Processed all files using ${name} configuration`);
-        }
+            }
     }
 }
