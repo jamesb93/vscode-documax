@@ -43,7 +43,7 @@ function renderParsedContent(data: Object, template: string): string {
 }
 
 export function parseAndRender(editorContent: string, template: string): string {
-    const markdownKeys = ['digest', 'digest'];
+    const markdownKeys = ['digest', 'discussion', 'description'];
 
     const parsedEditorContent = parseEditorContent(editorContent);
     recursiveObjectOperation(parsedEditorContent, (key: string, value: any) => {
