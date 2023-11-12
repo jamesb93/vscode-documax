@@ -1,6 +1,7 @@
 // @ts-ignore
 const mustache = require('Mustache');
 import { parse } from 'yaml';
+import { load } from 'js-yaml';
 import { marked } from 'marked';
 import { sanitise } from './parsing';
 import { objects, messages, attributes, links } from './markdownExtensions';
@@ -28,7 +29,7 @@ const renderer = {
 marked.use({ renderer, extensions: [ objects, messages, attributes, links ] });
 
 function parseEditorContent(editorContent: string): Object {
-    const parsed = parse(editorContent);
+    const parsed = load(editorContent);
     return sanitise(parsed);
 }
 
@@ -52,6 +53,6 @@ export function parseAndRender(editorContent: string, template: string): string 
         }
         return value;
     });
-    const rendered = renderParsedContent(parsedEditorContent, template);
+    const rendered = renderParsedContent(parsedEditorContent, template).trim();
     return rendered;
 }
