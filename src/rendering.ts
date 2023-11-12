@@ -45,7 +45,15 @@ function renderParsedContent(data: Object, template: string): string {
 export function parseAndRender(editorContent: string, template: string): string {
     const markdownKeys = ['digest', 'discussion', 'description'];
 
-    const parsedEditorContent = parseEditorContent(editorContent);
+    const parsedEditorContent: any = parseEditorContent(editorContent);
+    
+    // Make it so that you can supply a comma separated string for the seelaso list
+    const seealso = parsedEditorContent['seealso'];
+
+    if (seealso[0].includes(',') && seealso.length === 1) {
+        parsedEditorContent['seealso'] = seealso[0].split(',').map((item: string) => item.trim());
+    }
+
     recursiveObjectOperation(parsedEditorContent, (key: string, value: any) => {
         if (markdownKeys.includes(key)) {
             return marked.parse(value, { gfm: true });
