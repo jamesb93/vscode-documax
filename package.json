@@ -4,7 +4,7 @@
   "description": "Create Max Package Documentation with YAML",
   "publisher": "jamesbradbury",
   "repository": "https://github.com/jamesb93/vscode-documax",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.81.0"
   },
