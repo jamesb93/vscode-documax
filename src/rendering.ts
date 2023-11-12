@@ -1,6 +1,5 @@
 // @ts-ignore
 const mustache = require('Mustache');
-import { parse } from 'yaml';
 import { load } from 'js-yaml';
 import { marked } from 'marked';
 import { sanitise } from './parsing';
