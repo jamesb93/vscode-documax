@@ -6,21 +6,18 @@ import { parseAndRender } from './rendering';
 import { maxMustacheTemplate } from './templates/max';
 import { configuration } from './configuration';
 
-
 export function processFilesWithConfiguration() {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (workspaceFolders) {
         const workspaceUri = workspaceFolders[0].uri;
 
         for (const [name, io] of Object.entries(configuration.getConfiguration())) {
-
             const outputFolderUri = vscode.Uri.joinPath(workspaceUri, io.output);
 
             const yamlFiles = vscode.workspace.findFiles(`${io.input}/**/*.yaml`, null, 4096);
             yamlFiles.then(files => {
                 files.forEach(async file => {
-                    const yamlDocument = await vscode.workspace.openTextDocument(file);
-                    const yamlContent = yamlDocument.getText();
+                    const yamlContent = fs.readFileSync(file.fsPath, 'utf8');
 
                     // Process the content using your logic
                     const processedContent = parseAndRender(yamlContent, maxMustacheTemplate);
@@ -38,6 +35,6 @@ export function processFilesWithConfiguration() {
                     fs.writeFileSync(outputFileName, processedContent);
                 });
             });
-            }
+        }
     }
 }

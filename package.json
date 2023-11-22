@@ -32,13 +32,13 @@
     ]
   },
   "scripts": {
-    "pretest": "bun run compile && bun run lint",
+    "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js",
-    "vscode:prepublish": "bun run esbuild-base -- --minify",
+    "test": "vscode-test",
+    "vscode:prepublish": "pnpm run esbuild-base -- --minify",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
-    "compile": "bun run esbuild-base --",
-    "watch": "bun run esbuild-base -- --watch"
+    "compile": "pnpm run esbuild-base",
+    "watch": "pnpm run esbuild-base -- --watch"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
@@ -47,7 +47,8 @@
     "@types/vscode": "^1.81.0",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.8",
-    "@vscode/test-electron": "^2.3.2",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.7",
     "esbuild": "^0.19.2",
     "eslint": "^8.41.0",
     "glob": "^8.1.0",
@@ -57,6 +58,8 @@
   "dependencies": {
     "js-yaml": "^4.1.0",
     "marked": "^9.0.3",
-    "mustache": "^4.2.0"
+    "mustache": "^4.2.0",
+    "yaml": "^2.3.4",
+    "yamljs": "^0.3.0"
   }
 }

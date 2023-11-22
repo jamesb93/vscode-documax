@@ -1,0 +1,21 @@
+attributes:
+    -   name: a1
+        digest: First filter coefficient
+        description: First allpass filter coefficient.
+        size: '1'
+        type: float
+        value: '4'
+        default:
+            value: 4
+            type: float
+            size: 1
+    -   name: a2
+        digest: Second filter coefficient
+        description: Second allpass filter coefficient.
+        size: '1'
+        type: float
+        value: '1'
+        default:
+            value: 1
+            type: float
+            size: 1

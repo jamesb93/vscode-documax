@@ -1,10 +1,9 @@
 // @ts-ignore
 const mustache = require('Mustache');
-import { load } from 'js-yaml';
+import * as YAML from 'yaml';
 import { marked } from 'marked';
 import { sanitise } from './parsing';
 import { objects, messages, attributes, links } from './markdownExtensions';
-
 
 function recursiveObjectOperation(obj: any, callback: (key: string, value: any) => any) {
     for (const key in obj) {
@@ -28,7 +27,9 @@ const renderer = {
 marked.use({ renderer, extensions: [ objects, messages, attributes, links ] });
 
 function parseEditorContent(editorContent: string): Object {
-    const parsed = load(editorContent);
+    console.log(editorContent)
+    const parsed = YAML.parse(editorContent);
+    console.log(parsed)
     return sanitise(parsed);
 }
 
@@ -44,7 +45,7 @@ function renderParsedContent(data: Object, template: string): string {
 
 export function parseAndRender(editorContent: string, template: string): string {
     const markdownKeys = ['digest', 'discussion', 'description'];
-
+    
     const parsedEditorContent: any = parseEditorContent(editorContent);
     
     // Make it so that you can supply a comma separated string for the seelaso list

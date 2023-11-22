@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { objects, messages, attributes, links } from '../../markdownExtensions';
+import { objects, messages, attributes, links } from '../markdownExtensions';
 
 interface Token {
 	text: string
