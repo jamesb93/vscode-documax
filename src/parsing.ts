@@ -10,15 +10,15 @@ function insertDefaultData(source: Array<string>, key: string) {
 
 
 export const sanitise = (data: Object) => {
-    if (data.hasOwnProperty('messages')) {
-        data.messages = insertDefaultData(data.messages, 'name');
-    }
-    if (data.hasOwnProperty('attributes')) {
-        data.attributes = insertDefaultData(data.attributes, 'name');
-    }
-    if (data.hasOwnProperty('arguments')) {
-        data.arguments = insertDefaultData(data.arguments, 'name');
-    }
+    // if (data.hasOwnProperty('messages')) {
+    //     data.messages = insertDefaultData(data.messages, 'name');
+    // }
+    // if (data.hasOwnProperty('attributes')) {
+    //     data.attributes = insertDefaultData(data.attributes, 'name');
+    // }
+    // if (data.hasOwnProperty('arguments')) {
+    //     data.arguments = insertDefaultData(data.arguments, 'name');
+    // }
     if (data.hasOwnProperty('inlets')) {
         data.inlets = insertDefaultData(data.inlets, 'id');
     }

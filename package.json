@@ -4,7 +4,7 @@
   "description": "Create Max Package Documentation with YAML",
   "publisher": "jamesbradbury",
   "repository": "https://github.com/jamesb93/vscode-documax",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.81.0"
   },
@@ -32,13 +32,13 @@
     ]
   },
   "scripts": {
-    "pretest": "bun run compile && bun run lint",
+    "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
-    "vscode:prepublish": "bun run esbuild-base -- --minify",
+    "vscode:prepublish": "pnpm run esbuild-base -- --minify",
     "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
-    "compile": "bun run esbuild-base --",
-    "watch": "bun run esbuild-base -- --watch"
+    "compile": "pnpm run esbuild-base --",
+    "watch": "pnpm run esbuild-base -- --watch"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
