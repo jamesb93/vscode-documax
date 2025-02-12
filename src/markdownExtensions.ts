@@ -8,7 +8,7 @@ const createParserToken = (name: string, shortDecorator: string, longDecorator: 
             return match?.index;
         },
         tokenizer(src: string, tokens: Array<any>) {
-            const regex = new RegExp(`^(?:${longDecorator}|${shortDecorator})\\s+(\\w+(?:\\.\\w+)*)`);
+            const regex = new RegExp(`^(?:${longDecorator}|${shortDecorator})\\s+([\\w.~]+)`);
             const match = src.match(regex);
             if (match) {
                 const token = {
