@@ -21,7 +21,8 @@ function recursiveObjectOperation(obj: any, callback: (key: string, value: any) 
 
 const renderer = {
     paragraph(text: string) {
-        return `${text}\n`;
+        // Replace line breaks with explicit breaks
+        return `${text.replace(/\n/g, '\n')}\n`;
     }
 };
 
@@ -48,15 +49,18 @@ export function parseAndRender(editorContent: string, template: string): string 
     const parsedEditorContent: any = parseEditorContent(editorContent);
     
     // Make it so that you can supply a comma separated string for the seelaso list
-    const seealso = parsedEditorContent['seealso'];
+    const seealso = parsedEditorContent.seealso
 
     if (seealso[0].includes(',') && seealso.length === 1) {
-        parsedEditorContent['seealso'] = seealso[0].split(',').map((item: string) => item.trim());
+        parsedEditorContent.seealso = seealso[0].split(',').map((item: string) => item.trim());
     }
 
     recursiveObjectOperation(parsedEditorContent, (key: string, value: any) => {
         if (markdownKeys.includes(key)) {
-            return marked.parse(value, { gfm: true });
+            return marked.parse(value, { 
+                gfm: true,
+                breaks: true
+            });
         }
         return value;
     });
